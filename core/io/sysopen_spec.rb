@@ -31,6 +31,12 @@ describe "IO.sysopen" do
       @fd.should be_kind_of(Fixnum)
       @fd.should_not equal(0)
     end
+
+    it "throws an error when opening a directory with write mode" do
+      lambda { IO.sysopen(tmp(""), "w") }.should raise_error   # /tmp
+      lambda { IO.sysopen(tmp(""), "a") }.should raise_error   # /tmp
+      lambda { IO.sysopen(tmp(""), "r") }.should_not raise_error   # /tmp
+    end
   end
 
   ruby_version_is ""..."1.9" do
